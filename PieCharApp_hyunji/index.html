@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Pie Chart of Open Data</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
+    <script type="text/javascript">
+      sgvizler.prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+      sgvizler.prefix('owl', 'http://dbpedia.org/ontology/');
+      sgvizler.prefix('dbpedia-ja', 'http://ja.dbpedia.org/resource/');
+      sgvizler.prefix('category-ja', 'http://ja.dbpedia.org/resource/Category:');
+      $(document).ready(function() { sgvizler.containerDrawAll(); });
+  </script></head>
+  <body>
+    <h1>日本人の出身地ランキング（各都道府県別）</h1>
+    <h4>日本人の出身地を各都道府県単位で調査し、円グラフやテーブルで表しました。</h4>
+    <h3><strong>1. Pie Chart</strong></h3>
+    <div id="sgvzl_example_query"
+		data-sgvizler-endpoint="https://sparql.metadata.moe/dbpedia-ja/query"
+		 data-sgvizler-query="select distinct ?pref (count(?s) AS ?c) where {
+            ?pref rdf:type owl:Place.
+            ?pref owl:wikiPageWikiLink category-ja:日本の都道府県.
+            ?s owl:birthPlace ?pref.
+          } GROUP BY ?pref
+          ORDER BY DESC(?c)"
+	 data-sgvizler-chart="google.visualization.PieChart"
+	 data-sgvizler-loglevel="2"
+	 style="width:800px; height:800px;"></div>
+
+    <h3><strong>2. Table</strong></h3>
+    <div id="sgvzl_example_table"
+		data-sgvizler-endpoint="https://sparql.metadata.moe/dbpedia-ja/query"
+		 data-sgvizler-query="select distinct ?pref (count(?s) AS ?c) where {
+            ?pref rdf:type owl:Place.
+            ?pref owl:wikiPageWikiLink category-ja:日本の都道府県.
+            ?s owl:birthPlace ?pref.
+          } GROUP BY ?pref
+          ORDER BY DESC(?c)"
+		     data-sgvizler-chart="google.visualization.Table"
+		     data-sgvizler-loglevel="2" style="width:500px; height:1000px;"></div>
+	      </body>
+	    </html>

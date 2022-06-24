@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Pie Chart of Open Data</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
+    <script type="text/javascript">
+      sgvizler.prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
+      sgvizler.prefix('sdmx-dimension', 'http://purl.org/linked-data/sdmx/2009/dimension#');
+      sgvizler.prefix('estat-measure', 'http://data.e-stat.go.jp/lod/ontology/measure/');
+      sgvizler.prefix('cd-dimension', 'http://data.e-stat.go.jp/lod/ontology/crossDomain/dimension/');
+      sgvizler.prefix('cd-code', 'http://data.e-stat.go.jp/lod/ontology/crossDomain/code/');
+      sgvizler.prefix('g00200521-dimension-2010', 'http://data.e-stat.go.jp/lod/ontology/g00200521/dimension/2010/');
+      sgvizler.prefix('g00200521-code-2010', 'http://data.e-stat.go.jp/lod/ontology/g00200521/code/2010/');
+
+      $(document).ready(function() { sgvizler.containerDrawAll(); });
+  </script>
+  </head>
+  <body>
+    <h1>全国の日本人の人口テーブル (Japanese Population)</h1>
+    <h2>(日本語&ENG)</h2>
+    <br/>
+    <h3><strong>1. 地域別にまとめた日本人の人口テーブル</strong></h3>
+    <h5>テーブルのラベルや人口タブをクリックすると、タイプ別の並び替えが可能です。</h5>
+    <div id="sgvzl_example_table1"
+		data-sgvizler-endpoint="http://data.e-stat.go.jp/lod/sparql/alldata/query"
+		 data-sgvizler-query="select  ?label ?population 
+         where {
+               ?s estat-measure:population ?population;
+                  sdmx-dimension:refArea / rdfs:label ?label ;
+                  cd-dimension:sex cd-code:sex-all ; 
+                  cd-dimension:nationality cd-code:nationality-japan ; 
+                  g00200521-dimension-2010:area g00200521-code-2010:area-all ; 
+                  cd-dimension:age cd-code:age-all . 
+                  FILTER (LANG(?label)='ja') .
+         }
+         ORDER BY DESC(?population)"
+		     data-sgvizler-chart="google.visualization.Table"
+		     data-sgvizler-loglevel="2" 
+         style="width:700px; height:700px;"></div>
+
+         <br/>
+
+    <h3><strong>2. Population Table of Japanese People in Japan: organized by region</strong></h3>
+    <h4>You can sort by type by clicking label or population tab on the table.</h4>
+    <div id="sgvzl_example_table2"
+    data-sgvizler-endpoint="http://data.e-stat.go.jp/lod/sparql/alldata/query"
+     data-sgvizler-query="select  ?label ?population 
+     where {
+           ?s estat-measure:population ?population;
+              sdmx-dimension:refArea / rdfs:label ?label ;
+              cd-dimension:sex cd-code:sex-all ; 
+              cd-dimension:nationality cd-code:nationality-japan ; 
+              g00200521-dimension-2010:area g00200521-code-2010:area-all ; 
+              cd-dimension:age cd-code:age-all . 
+              FILTER (LANG(?label)='en') .
+     }
+     ORDER BY DESC(?population)"
+         data-sgvizler-chart="google.visualization.Table"
+         data-sgvizler-loglevel="2" 
+         style="width:700px; height:700px;"></div>
+	      </body>
+	    </html>
